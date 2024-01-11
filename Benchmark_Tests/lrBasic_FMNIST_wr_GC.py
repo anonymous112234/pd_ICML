@@ -60,8 +60,8 @@ def set_global_determinism(seed=SEED):
     os.environ['TF_DETERMINISTIC_OPS'] = '1'
     os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
     
-    tf.config.threading.set_inter_op_parallelism_threads(1)
-    tf.config.threading.set_intra_op_parallelism_threads(1)
+    # tf.config.threading.set_inter_op_parallelism_threads(1)
+    # tf.config.threading.set_intra_op_parallelism_threads(1)
 
 
 for h in range(len(SEED)):
@@ -201,99 +201,99 @@ for h in range(len(SEED)):
 	import time
 	start_time = time.time()
 
-	with tf.device('/device:GPU:0'):
-		integers = [i for i in range(1, 51)]
-		x = [j * (batches * pop_size) for j in integers]
-		print(x)
+	# with tf.device('/device:GPU:0'):
+	integers = [i for i in range(1, 51)]
+	x = [j * (batches * pop_size) for j in integers]
+	print(x)
 
-		# TRAINING
-		for i in tqdm(range(iterations)):
+	# TRAINING
+	for i in tqdm(range(iterations)):
 
-			indices = np.random.choice(59999, size = (batch_size*batches, ), replace=False)
-			vIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
+		indices = np.random.choice(59999, size = (batch_size*batches, ), replace=False)
+		vIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
 
-			random_batch_FM_train_images, random_batch_FM_train_labels = FM_train_images[indices], FM_train_labels[indices]
-			random_batch_FM_validation_images, random_batch_FM_validation_labels = FM_validation_images[vIndices], FM_validation_labels[vIndices]
+		random_batch_FM_train_images, random_batch_FM_train_labels = FM_train_images[indices], FM_train_labels[indices]
+		random_batch_FM_validation_images, random_batch_FM_validation_labels = FM_validation_images[vIndices], FM_validation_labels[vIndices]
 
-			# indices
-			tIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
-			population_training_losses = []
+		# indices
+		tIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
+		population_training_losses = []
 
-			for j in range(len(population)):
+		for j in range(len(population)):
 
-				print("model %s" % (j+1))
-				population[j].fit(random_batch_FM_train_images, random_batch_FM_train_labels, validation_data = (random_batch_FM_validation_images, random_batch_FM_validation_labels), epochs=epochs, verbose=1, batch_size=batch_size)
+			print("model %s" % (j+1))
+			population[j].fit(random_batch_FM_train_images, random_batch_FM_train_labels, validation_data = (random_batch_FM_validation_images, random_batch_FM_validation_labels), epochs=epochs, verbose=1, batch_size=batch_size)
 
-				print("regularization_amount: %s" % reg_list[j])
-				print("learning rate: %s" % population[j].optimizer.learning_rate)
-				print("")
+			print("regularization_amount: %s" % reg_list[j])
+			print("learning rate: %s" % population[j].optimizer.learning_rate)
+			print("")
 
-				# population_training_losses.append(training_loss)
+			# population_training_losses.append(training_loss)
 
-				# observing optimization progress
-				if (i%rr)==0:
-						if i!=(iterations-1):
-							individual_observer_loss = observer(population[j], tIndices)
-							population_training_losses.append(individual_observer_loss)
-
-
+			# observing optimization progress
 			if (i%rr)==0:
-				if population_training_losses:
-					population_training_losses = np.array(population_training_losses)
-					observer_history.append(np.min(population_training_losses))
-					population_training_losses = []
+					if i!=(iterations-1):
+						individual_observer_loss = observer(population[j], tIndices)
+						population_training_losses.append(individual_observer_loss)
 
-			# if (i%rr)==0:
-			# 		if i!=(iterations-1):
-			# 			print(""), print("observing"), print("..."), print("")
-			# 			population_training_losses = np.array(population_training_losses)
-			# 			observer_history.append(np.min(population_training_losses))
+
+		if (i%rr)==0:
+			if population_training_losses:
+				population_training_losses = np.array(population_training_losses)
+				observer_history.append(np.min(population_training_losses))
+				population_training_losses = []
+
+		# if (i%rr)==0:
+		# 		if i!=(iterations-1):
+		# 			print(""), print("observing"), print("..."), print("")
+		# 			population_training_losses = np.array(population_training_losses)
+		# 			observer_history.append(np.min(population_training_losses))
 
 
 
 	time_lapsed = time.time() - start_time
 
 
-	with tf.device('/device:GPU:0'):
-		# # Evaluating on test data
-		np.random.seed(0)
-		eIndices = np.random.choice(4999, size = (batch_size*25, ), replace=False)
-		random_batch_FM_train_images, random_batch_FM_train_labels, random_batch_FM_test_images, random_batch_FM_test_labels = FM_train_images[eIndices], FM_train_labels[eIndices], FM_test_images[eIndices], FM_test_labels[eIndices]
+	# with tf.device('/device:GPU:0'):
+	# # Evaluating on test data
+	np.random.seed(0)
+	eIndices = np.random.choice(4999, size = (batch_size*25, ), replace=False)
+	random_batch_FM_train_images, random_batch_FM_train_labels, random_batch_FM_test_images, random_batch_FM_test_labels = FM_train_images[eIndices], FM_train_labels[eIndices], FM_test_images[eIndices], FM_test_labels[eIndices]
 
-		training_losses, evaluation_losses, evaluation_accuracies = [], [], []
+	training_losses, evaluation_losses, evaluation_accuracies = [], [], []
 
-		for h in range(len(population)):
-			print(""), print("evaluating model %s" % (h+1))
+	for h in range(len(population)):
+		print(""), print("evaluating model %s" % (h+1))
 
-			print("training:")
-			training_loss, training_accuracy = population[h].evaluate(random_batch_FM_train_images, random_batch_FM_train_labels, batch_size = batch_size)
-			print(""), print("test")
-			test_loss, test_acc = population[h].evaluate(random_batch_FM_test_images, random_batch_FM_test_labels, batch_size = batch_size)
+		print("training:")
+		training_loss, training_accuracy = population[h].evaluate(random_batch_FM_train_images, random_batch_FM_train_labels, batch_size = batch_size)
+		print(""), print("test")
+		test_loss, test_acc = population[h].evaluate(random_batch_FM_test_images, random_batch_FM_test_labels, batch_size = batch_size)
 
-			# ntest_loss = 1/(1+test_loss)
-			test_loss = np.array(test_loss)
+		# ntest_loss = 1/(1+test_loss)
+		test_loss = np.array(test_loss)
 
-			training_losses.append(training_loss)
+		training_losses.append(training_loss)
 
-			evaluation_losses.append(test_loss)
-			evaluation_accuracies.append(test_acc)
+		evaluation_losses.append(test_loss)
+		evaluation_accuracies.append(test_acc)
 
 
-		best_training_model_loss_unnormalized = np.min(training_losses)
-		best_test_model_loss = np.min(evaluation_losses)
+	best_training_model_loss_unnormalized = np.min(training_losses)
+	best_test_model_loss = np.min(evaluation_losses)
 
-		# print(best_test_model_loss)
-		print("unnormalized test loss: %s" % best_test_model_loss)
+	# print(best_test_model_loss)
+	print("unnormalized test loss: %s" % best_test_model_loss)
 
-		best_index = evaluation_losses.index(best_test_model_loss)
+	best_index = evaluation_losses.index(best_test_model_loss)
 
-		best_lr = (population[best_index]).optimizer.learning_rate
-		best_reg_amount = reg_list[best_index]
+	best_lr = (population[best_index]).optimizer.learning_rate
+	best_reg_amount = reg_list[best_index]
 
-		evaluation_losses = np.array(evaluation_losses)
-		# print(evaluation_losses)
-		test_loss_data = statistics.mean(evaluation_losses)
-		test_acc_data = statistics.mean(evaluation_accuracies)
+	evaluation_losses = np.array(evaluation_losses)
+	# print(evaluation_losses)
+	test_loss_data = statistics.mean(evaluation_losses)
+	test_acc_data = statistics.mean(evaluation_accuracies)
 
 
 
