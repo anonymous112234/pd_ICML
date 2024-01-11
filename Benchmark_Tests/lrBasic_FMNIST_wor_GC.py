@@ -42,7 +42,7 @@ import csv
 
 from matplotlib.backends.backend_pdf import PdfPages
 
-from NN_models_FMNIST import new_hps_NN_individual_FMNIST_LRSchedule_with_regularization
+from NN_models_FMNIST import new_hps_NN_individual_FMNIST_LRSchedule_without_regularization
 
 # setting seed
 SEED = [5, 15, 24, 34, 49, 60, 74, 89, 97, 100]
@@ -69,7 +69,7 @@ for h in range(len(SEED)):
 	print(""), print("SEED:"), print(SEED[h]), print("")
 	set_global_determinism(seed=SEED[h])
 
-	population, reg_list, model_num = new_hps_NN_individual_FMNIST_LRSchedule_with_regularization()
+	population, reg_list, model_num = new_hps_NN_individual_FMNIST_LRSchedule_without_regularization()
 
 
 	# Fashion-MNIST dataset
@@ -315,7 +315,7 @@ for h in range(len(SEED)):
 	# writing data to excel file
 	data = [[best_test_model_loss, best_training_model_loss_unnormalized, gradient_steps, model_num, best_reg_amount, best_lr, iterations, epochs, batches, batch_size, time_lapsed, s]]
 
-	with open('../BasicGridSearch_FMNIST_LRSchedule_Benchmark_with_regularization.csv', 'a', newline = '') as file:
+	with open('../BasicGridSearch_FMNIST_LRSchedule_Benchmark_without_regularization.csv', 'a', newline = '') as file:
 		writer = csv.writer(file)
 		writer.writerows(data)
 
