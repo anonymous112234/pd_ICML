@@ -265,8 +265,8 @@ def new_hps_NN_LRSchedule_individual_without_regularization():
 
 
 		 	# model #6 with reg, better, bigger CIFAR10 model
-			# learning_rate = [0.01, 0.001, 0.0001, 0.00001, 0.000001]
-			# regularization_amount = [0.01, 0.001, 0.0001, 0.00001, 0.000001]
+			learning_rate = [0.01, 0.001, 0.0001, 0.00001, 0.000001]
+			regularization_amount = [0.01, 0.001, 0.0001, 0.00001, 0.000001]
 
 			model_num = "6 CIFAR without_reg"
 			model = tf.keras.Sequential([
