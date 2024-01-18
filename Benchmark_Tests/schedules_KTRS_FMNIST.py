@@ -136,8 +136,6 @@ for seed in SEED:
 	    objective="val_accuracy",
 	    max_trials=max_trials,
 	    executions_per_trial=5,
-	    overwrite=True,
-	    project_name="FMNIST: %s" % SEED
 	)
 
 	# with tf.device('/device:GPU:0'):
