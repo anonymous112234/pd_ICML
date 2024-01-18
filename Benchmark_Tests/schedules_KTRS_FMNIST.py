@@ -10,6 +10,14 @@ import random
 import os
 import csv
 
+
+from google.colab import auth
+from google.cloud import storage
+
+# Authenticate with Google Cloud
+auth.authenticate_user()
+
+
 # cd Documents/
 # cd populationDescent/
 # python3 -m venv ~/venv-metal
