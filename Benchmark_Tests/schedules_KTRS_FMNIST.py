@@ -140,9 +140,9 @@ for seed in SEED:
 	    project_name="FMNIST: %s" % SEED
 	)
 
-	with tf.device('/device:GPU:0'):
-		# search
-		tuner.search(train_images, train_labels, validation_data=(validation_images, validation_labels), batch_size=64)
+	# with tf.device('/device:GPU:0'):
+	# search
+	tuner.search(train_images, train_labels, validation_data=(validation_images, validation_labels), batch_size=64)
 
 	# retrieve and train best model
 	best_hps = tuner.get_best_hyperparameters(5)
