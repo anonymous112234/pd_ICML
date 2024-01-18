@@ -136,6 +136,8 @@ for seed in SEED:
 	    objective="val_accuracy",
 	    max_trials=max_trials,
 	    executions_per_trial=5,
+	    directory='/content/tuner_results',
+	    project_name='schedules_KTRS_FMNIST'
 	)
 
 	# with tf.device('/device:GPU:0'):
