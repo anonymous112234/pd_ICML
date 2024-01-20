@@ -17,6 +17,13 @@ from google.cloud import storage
 # Authenticate with Google Cloud
 auth.authenticate_user()
 
+project_id = 'schedulesktrsfmnist'
+bucket_name = 'schedulesktrsfmnist'
+
+client = storage.Client(project=project_id)
+bucket = client.get_bucket(bucket_name)
+
+
 
 # cd Documents/
 # cd populationDescent/
@@ -134,7 +141,7 @@ for seed in SEED:
 	start_time = time.time()  
 
 
-	max_trials = 50
+	max_trials = 25
 	model_num = "FMNIST 4"
 
 	# define tuner
@@ -143,8 +150,8 @@ for seed in SEED:
 	    hypermodel=build_model,
 	    objective="val_accuracy",
 	    max_trials=max_trials,
-	    executions_per_trial=5,
-	    directory='/content/tuner_results',
+	    executions_per_trial=2,
+	    directory='gs://{}/tuner_results'.format(bucket_name),
 	    project_name='schedules_KTRS_FMNIST'
 	)
 
