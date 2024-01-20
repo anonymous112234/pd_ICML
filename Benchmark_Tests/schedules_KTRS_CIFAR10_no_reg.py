@@ -138,8 +138,8 @@ for seed in SEED:
 	    objective="val_accuracy",
 	    max_trials=max_trials,
 	    executions_per_trial=2,
-	    overwrite=True,
-	    project_name="CIFAR: %s" % SEED
+	   	directory='gs://{}/CIFAR10_tuner_results'.format(bucket_name),
+	    project_name='schedules_KTRS_CIFAR10'
 	)
 
 
