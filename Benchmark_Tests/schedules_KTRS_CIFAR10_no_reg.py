@@ -64,34 +64,34 @@ def build_model(hp):
 
 
 	# Tune the learning rate schedule
-    lr_schedule = hp.Choice('learning_rate_schedule', values=['exponential', 'inverse_time', 'polynomial'])
+	lr_schedule = hp.Choice('learning_rate_schedule', values=['exponential', 'inverse_time', 'polynomial'])
     
 
-    if lr_schedule == 'exponential':
-        lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
-        decay_rate = hp.Float('decay_rate', min_value=0.8, max_value=0.99, default=0.9)
-        decay_steps = hp.Int('decay_steps', min_value=1000, max_value=10000, step=1000, default=5000)
-        lr_schedule = keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=lr, decay_steps=decay_steps, decay_rate=decay_rate)
-        optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
-    elif lr_schedule == 'inverse_time':
-        lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
-        decay_rate = hp.Float('decay_rate', min_value=0.1, max_value=0.9, default=0.5)
-        decay_steps = hp.Int('decay_steps', min_value=1000, max_value=10000, step=1000, default=5000)
-        lr_schedule = keras.optimizers.schedules.InverseTimeDecay(initial_learning_rate=lr, decay_steps=decay_steps, decay_rate=decay_rate)
-        optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
-    elif lr_schedule == 'polynomial':
-        lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
-        end_learning_rate = hp.Float('end_learning_rate', min_value=1e-6, max_value=1e-2, sampling='log', default=1e-6)
-        decay_steps = hp.Int('decay_steps', min_value=1000, max_value=10000, step=1000, default=5000)
-        power = hp.Float('power', min_value=0.1, max_value=2.0, default=1.0)
-        lr_schedule = keras.optimizers.schedules.PolynomialDecay(
-            initial_learning_rate=lr, decay_steps=decay_steps, end_learning_rate=end_learning_rate, power=power
-        )
-        optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
+	if lr_schedule == 'exponential':
+    	lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
+    	decay_rate = hp.Float('decay_rate', min_value=0.8, max_value=0.99, default=0.9)
+		decay_steps = hp.Int('decay_steps', min_value=1000, max_value=10000, step=1000, default=5000)
+		lr_schedule = keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=lr, decay_steps=decay_steps, decay_rate=decay_rate)
+		optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
+	elif lr_schedule == 'inverse_time':
+		lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
+		decay_rate = hp.Float('decay_rate', min_value=0.1, max_value=0.9, default=0.5)
+		decay_steps = hp.Int('decay_steps', min_value=1000, max_value=10000, step=1000, default=5000)
+		lr_schedule = keras.optimizers.schedules.InverseTimeDecay(initial_learning_rate=lr, decay_steps=decay_steps, decay_rate=decay_rate)
+		optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
+	elif lr_schedule == 'polynomial':
+		lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
+		end_learning_rate = hp.Float('end_learning_rate', min_value=1e-6, max_value=1e-2, sampling='log', default=1e-6)
+		decay_steps = hp.Int('decay_steps', min_value=1000, max_value=10000, step=1000, default=5000)
+		power = hp.Float('power', min_value=0.1, max_value=2.0, default=1.0)
+		lr_schedule = keras.optimizers.schedules.PolynomialDecay(
+		    initial_learning_rate=lr, decay_steps=decay_steps, end_learning_rate=end_learning_rate, power=power
+		)
+		optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
 
 
     # Compile the model
-    model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+	model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 	return model
  
