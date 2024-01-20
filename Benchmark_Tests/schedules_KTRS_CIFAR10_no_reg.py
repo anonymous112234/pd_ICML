@@ -68,7 +68,7 @@ def build_model(hp):
     
 
 	if lr_schedule == 'exponential':
-    	lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
+		lr = hp.Float('initial_learning_rate', min_value=1e-4, max_value=1e-2, sampling='log', default=1e-3)
     	decay_rate = hp.Float('decay_rate', min_value=0.8, max_value=0.99, default=0.9)
 		decay_steps = hp.Int('decay_steps', min_value=1000, max_value=10000, step=1000, default=5000)
 		lr_schedule = keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=lr, decay_steps=decay_steps, decay_rate=decay_rate)
