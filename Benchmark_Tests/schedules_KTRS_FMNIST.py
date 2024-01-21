@@ -11,6 +11,7 @@ import os
 import csv
 
 
+# GC
 from google.colab import auth
 from google.cloud import storage
 
@@ -151,7 +152,7 @@ for seed in SEED:
 	    objective="val_accuracy",
 	    max_trials=max_trials,
 	    executions_per_trial=2,
-	    directory='gs://{}/tuner_results'.format(bucket_name),
+	    directory='gs://{}/tuner_results{}'.format(bucket_name, seed),
 	    project_name='schedules_KTRS_FMNIST'
 	)
 
