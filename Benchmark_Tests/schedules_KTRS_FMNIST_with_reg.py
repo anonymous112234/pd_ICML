@@ -70,8 +70,8 @@ def build_model(hp):
 
     model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
 
-    model.add(tf.keras.layers.Dense(1024, activation = "relu"), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg))
-    model.add(tf.keras.layers.Dropout(0.5))
+    model.add(tf.keras.layers.Dense(1024, activation = "relu", kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
+    model.add(tf.keras.layers.Dropout(0.5, , kernel_regularizer=tf.keras.regularizers.l2(l=.001)))
     model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
 
@@ -152,7 +152,7 @@ for seed in SEED:
 	    objective="val_accuracy",
 	    max_trials=max_trials,
 	    executions_per_trial=2,
-	    directory='gs://{}/tuner_results{}'.format(bucket_name, seed),
+	    directory='gs://{}/reg_tuner_results{}'.format(bucket_name, seed),
 	    project_name='schedules_KTRS_FMNIST'
 	)
 

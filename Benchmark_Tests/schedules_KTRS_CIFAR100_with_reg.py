@@ -141,7 +141,7 @@ for seed in SEED:
 	    objective="val_accuracy",
 	    max_trials=max_trials,
 	    executions_per_trial=2,
-	   	directory='gs://{}/CIFAR100_tuner_results{}'.format(bucket_name, seed),
+	   	directory='gs://{}/reg_CIFAR100_tuner_results{}'.format(bucket_name, seed),
 	    project_name='schedules_KTRS_CIFAR100'
 	)
 
