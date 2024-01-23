@@ -51,18 +51,18 @@ def build_model(hp):
 
 	model = keras.Sequential()
 	model.add(tf.keras.layers.Conv2D(32,  kernel_size = 3, activation='relu', input_shape = (32, 32, 3), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
-	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, activation='relu'), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg))
+	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
 	model.add(tf.keras.layers.MaxPooling2D((2, 2), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
-	model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, activation='relu'), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg))
+	model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
 	model.add(tf.keras.layers.MaxPooling2D((2, 2), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
-	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, activation='relu'), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg))
+	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
 	model.add(tf.keras.layers.MaxPooling2D((4, 4), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
 
 	model.add(tf.keras.layers.Flatten())
 
 	
 
-	model.add(tf.keras.layers.Dense(256, activation = "relu"), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg))
+	model.add(tf.keras.layers.Dense(256, activation = "relu", kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
 	model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
 

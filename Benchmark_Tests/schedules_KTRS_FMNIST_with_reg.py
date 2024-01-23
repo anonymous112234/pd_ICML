@@ -68,7 +68,7 @@ def build_model(hp):
     model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
     model.add(tf.keras.layers.Conv2D(256,  kernel_size = 3, dilation_rate=(1,1), activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
 
-    model.add(tf.keras.layers.Flatten(input_shape=(28, 28), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
+    model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
 
     model.add(tf.keras.layers.Dense(1024, activation = "relu"), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg))
     model.add(tf.keras.layers.Dropout(0.5))
