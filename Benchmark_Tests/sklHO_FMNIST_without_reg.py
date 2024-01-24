@@ -18,14 +18,14 @@ from hyperopt import fmin, tpe, hp
 from google.colab import auth
 from google.cloud import storage
 
-# Authenticate with Google Cloud
-auth.authenticate_user()
+# # Authenticate with Google Cloud
+# auth.authenticate_user()
 
-project_id = 'schedulesktrsfmnist'
-bucket_name = 'schedulesktrsfmnist'
+# project_id = 'schedulesktrsfmnist'
+# bucket_name = 'schedulesktrsfmnist'
 
-client = storage.Client(project=project_id)
-bucket = client.get_bucket(bucket_name)
+# client = storage.Client(project=project_id)
+# bucket = client.get_bucket(bucket_name)
 
 
 
@@ -64,26 +64,26 @@ def build_model(params):
     
 	model = models.Sequential()
 
-    model.add(layers.Conv2D(filters=params['conv1_filters'], kernel_size=params['conv1_kernel'], strides=(2, 2),
+	model.add(layers.Conv2D(filters=params['conv1_filters'], kernel_size=params['conv1_kernel'], strides=(2, 2),
                             dilation_rate=(1, 1), activation='relu', input_shape=(28, 28, 1)))
-    model.add(layers.Conv2D(filters=params['conv2_filters'], kernel_size=params['conv2_kernel'], strides=(2, 2),
+	model.add(layers.Conv2D(filters=params['conv2_filters'], kernel_size=params['conv2_kernel'], strides=(2, 2),
                             dilation_rate=(1, 1), activation='relu'))
-    model.add(layers.Conv2D(filters=params['conv3_filters'], kernel_size=params['conv3_kernel'],
+	model.add(layers.Conv2D(filters=params['conv3_filters'], kernel_size=params['conv3_kernel'],
                             dilation_rate=(1, 1), activation='relu'))
 
-    model.add(layers.Flatten(input_shape=(28, 28)))
+	model.add(layers.Flatten(input_shape=(28, 28)))
 
-    model.add(layers.Dense(units=params['dense_units'], activation="relu"))
-    model.add(layers.Dropout(params['dropout']))
-    model.add(layers.Dense(10, activation="softmax"))
+	model.add(layers.Dense(units=params['dense_units'], activation="relu"))
+	model.add(layers.Dropout(params['dropout']))
+	model.add(layers.Dense(10, activation="softmax"))
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
+	optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
 
 
     # Compile the model
-    model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+	model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     
-    return model
+	return model
 
  
 
@@ -127,19 +127,19 @@ for seed in SEED:
 
 	# Define the search space
 	space = {
-	    'conv1_filters': hp.choice('conv1_filters', [32, 64, 128]),
-	    'conv1_kernel': hp.choice('conv1_kernel', [3, 5]),
-	    'conv2_filters': hp.choice('conv2_filters', [64, 128, 256]),
-	    'conv2_kernel': hp.choice('conv2_kernel', [3, 5]),
-	    'conv3_filters': hp.choice('conv3_filters', [128, 256, 512]),
-	    'conv3_kernel': hp.choice('conv3_kernel', [3, 5]),
-	    'dense_units': hp.choice('dense_units', [128, 256, 512]),
-	    'dropout': hp.uniform('dropout', 0.2, 0.5),
-	    'learning_rate': hp.loguniform('learning_rate', -4, -2),
+		'conv1_filters': hp.choice('conv1_filters', [32, 64, 128]),
+		'conv1_kernel': hp.choice('conv1_kernel', [3, 5]),
+		'conv2_filters': hp.choice('conv2_filters', [64, 128, 256]),
+		'conv2_kernel': hp.choice('conv2_kernel', [3, 5]),
+		'conv3_filters': hp.choice('conv3_filters', [128, 256, 512]),
+		'conv3_kernel': hp.choice('conv3_kernel', [3, 5]),
+		'dense_units': hp.choice('dense_units', [128, 256, 512]),
+		'dropout': hp.uniform('dropout', 0.2, 0.5),
+		'learning_rate': hp.loguniform('learning_rate', -4, -2),
 	}
 
 	def objective(params):
-	    model = create_cnn(params)
+		model = create_cnn(params)
 
 	    # Train and evaluate the model (modify this according to your dataset and training process)
 	    train_epochs = 5
@@ -149,7 +149,7 @@ for seed in SEED:
 		validation_accuracy = history.history['val_accuracy'][-1]
 
 	    # Hyperopt minimizes the objective function, so negate the metric you want to maximize
-	    return -validation_accuracy
+		return -validation_accuracy
 
 
 	# Run Hyperopt to find the best hyperparameters
