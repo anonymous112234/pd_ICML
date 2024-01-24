@@ -141,14 +141,14 @@ for seed in SEED:
 	def objective(params):
 		model = create_cnn(params)
 
-	    # Train and evaluate the model (modify this according to your dataset and training process)
-	    train_epochs = 5
-	    history = model.fit(train_images, train_labels, batch_size= 64, validation_data=(validation_images, validation_labels), epochs=train_epochs, callbacks=[callback])
+		# Train and evaluate the model (modify this according to your dataset and training process)
+		train_epochs = 5
+		history = model.fit(train_images, train_labels, batch_size= 64, validation_data=(validation_images, validation_labels), epochs=train_epochs, callbacks=[callback])
 	    
 		# Access the validation accuracy
 		validation_accuracy = history.history['val_accuracy'][-1]
 
-	    # Hyperopt minimizes the objective function, so negate the metric you want to maximize
+		# Hyperopt minimizes the objective function, so negate the metric you want to maximize
 		return -validation_accuracy
 
 
