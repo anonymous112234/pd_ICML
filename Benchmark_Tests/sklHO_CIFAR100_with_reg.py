@@ -110,7 +110,7 @@ for seed in SEED:
 	start_time = time.time()  
 
 
-	max_trials = 25
+
 	model_num = "FMNIST 4"
 
 
@@ -145,7 +145,7 @@ for seed in SEED:
 
 
 	# Run Hyperopt to find the best hyperparameters
-	max_evals = 25
+	max_evals = 37
 	best = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=max_evals)
 
 	# retrieve and train best model
