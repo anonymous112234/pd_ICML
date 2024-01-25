@@ -12,11 +12,14 @@
 # python3 -m LRSchedule_FMNIST_Benchmark_with_regularization
 # python3 -m hyperparameter_search
 
+# import scipy
+# from scipy.special import softmax
+# from sklearn.cluster import KMeans
+
+
 import random
 import math
 import matplotlib.pyplot as plt
-import scipy
-from scipy.special import softmax
 import numpy as np
 
 # Typing
@@ -25,7 +28,6 @@ from typing import TypeVar, Generic
 from collections.abc import Callable
 
 from tqdm import tqdm
-# from sklearn.cluster import KMeans
 import statistics
 import dataclasses
 from dataclasses import dataclass

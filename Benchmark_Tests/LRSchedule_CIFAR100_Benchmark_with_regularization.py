@@ -67,7 +67,7 @@ for h in range(len(SEED)):
 	population, reg_list, model_num = new_CIFAR_LRSchedule_hps_individual_with_regularization()
 
 
-	# CIFAR10 dataset
+	# CIFAR100 dataset
 	(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar100.load_data()
 
 	# normalizing data
