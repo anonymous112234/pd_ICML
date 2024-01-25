@@ -73,7 +73,7 @@ def build_model(params):
     # # no regularization
     # hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
 
-	model.add(tf.keras.layers.Dense(1024, activation = "relu"), kernel_regularizer=tf.keras.regularizers.l2(params['l2_reg']))
+	model.add(tf.keras.layers.Dense(1024, activation = "relu", kernel_regularizer=tf.keras.regularizers.l2(params['l2_reg'])))
 	model.add(tf.keras.layers.Dropout(0.5))
 	model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
