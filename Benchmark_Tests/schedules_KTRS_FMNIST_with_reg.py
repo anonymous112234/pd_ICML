@@ -64,14 +64,14 @@ def build_model(hp):
     hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
 
     # model layers
-    model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', input_shape = (28, 28, 1), kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
-    model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
-    model.add(tf.keras.layers.Conv2D(256,  kernel_size = 3, dilation_rate=(1,1), activation='relu', kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
+    model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', input_shape = (28, 28, 1)))
+    model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu'))
+    model.add(tf.keras.layers.Conv2D(256,  kernel_size = 3, dilation_rate=(1,1), activation='relu'))
 
     model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
 
-    model.add(tf.keras.layers.Dense(1024, activation = "relu", kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
-    model.add(tf.keras.layers.Dropout(0.5, , kernel_regularizer=tf.keras.regularizers.l2(l=.001)))
+    model.add(tf.keras.layers.Dense(1024, activation = "relu", , kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
+    model.add(tf.keras.layers.Dropout(0.5))
     model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
 
