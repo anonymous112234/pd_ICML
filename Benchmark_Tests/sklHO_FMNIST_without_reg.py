@@ -64,18 +64,19 @@ def build_model(params):
     
 	model = models.Sequential()
 
-	model.add(layers.Conv2D(filters=params['conv1_filters'], kernel_size=params['conv1_kernel'], strides=(2, 2),
-                            dilation_rate=(1, 1), activation='relu', input_shape=(28, 28, 1)))
-	model.add(layers.Conv2D(filters=params['conv2_filters'], kernel_size=params['conv2_kernel'], strides=(2, 2),
-                            dilation_rate=(1, 1), activation='relu'))
-	model.add(layers.Conv2D(filters=params['conv3_filters'], kernel_size=params['conv3_kernel'],
-                            dilation_rate=(1, 1), activation='relu'))
+    # model layers
+    model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', input_shape = (28, 28, 1)))
+    model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu'))
+    model.add(tf.keras.layers.Conv2D(256,  kernel_size = 3, dilation_rate=(1,1), activation='relu'))
 
-	model.add(layers.Flatten(input_shape=(28, 28)))
+    model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
 
-	model.add(layers.Dense(units=params['dense_units'], activation="relu"))
-	model.add(layers.Dropout(params['dropout']))
-	model.add(layers.Dense(10, activation="softmax"))
+    # # no regularization
+    # hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
+
+    model.add(tf.keras.layers.Dense(1024, activation = "relu"))
+    model.add(tf.keras.layers.Dropout(0.5))
+    model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
 	optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
 
@@ -127,14 +128,6 @@ for seed in SEED:
 
 	# Define the search space
 	space = {
-		'conv1_filters': hp.choice('conv1_filters', [32, 64, 128]),
-		'conv1_kernel': hp.choice('conv1_kernel', [3, 5]),
-		'conv2_filters': hp.choice('conv2_filters', [64, 128, 256]),
-		'conv2_kernel': hp.choice('conv2_kernel', [3, 5]),
-		'conv3_filters': hp.choice('conv3_filters', [128, 256, 512]),
-		'conv3_kernel': hp.choice('conv3_kernel', [3, 5]),
-		'dense_units': hp.choice('dense_units', [128, 256, 512]),
-		'dropout': hp.uniform('dropout', 0.2, 0.5),
 		'learning_rate': hp.loguniform('learning_rate', -4, -2),
 	}
 
@@ -143,7 +136,7 @@ for seed in SEED:
 
 		# Train and evaluate the model (modify this according to your dataset and training process)
 		train_epochs = 5
-		history = model.fit(train_images, train_labels, batch_size= 64, validation_data=(validation_images, validation_labels), epochs=train_epochs, callbacks=[callback])
+		history = model.fit(train_images, train_labels, batch_size= 64, validation_data=(validation_images, validation_labels), epochs=train_epochs)
 	    
 		# Access the validation accuracy
 		validation_accuracy = history.history['val_accuracy'][-1]
