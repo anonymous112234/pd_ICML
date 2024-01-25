@@ -121,7 +121,7 @@ for seed in SEED:
 	start_time = time.time()  
 
 
-	max_trials = 25
+	max_trials = 32
 	model_num = "FMNIST 4"
 
 

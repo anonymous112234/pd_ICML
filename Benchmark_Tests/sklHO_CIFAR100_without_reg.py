@@ -191,6 +191,7 @@ for seed in SEED:
 
 
 	model_num = "4_without_reg"
+	max_trials = 37
 
 
 	# writing data to excel file
