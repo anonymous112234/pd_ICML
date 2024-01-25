@@ -135,9 +135,9 @@ for seed in SEED:
 
 		batch_size = 64
 		batches = 128
-		
+
 		# Train and evaluate the model (modify this according to your dataset and training process)
-		train_epochs = 5
+		train_epochs = 6
 		indices = np.random.choice(59999, size = (batch_size*batches, ), replace=False)
 		vIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
 
@@ -145,7 +145,7 @@ for seed in SEED:
 		random_batch_train_images, random_batch_train_labels = train_images[indices], train_labels[indices]
 		random_batch_validation_images, random_batch_validation_labels = validation_images[vIndices], validation_labels[vIndices]
 
-		history = model.fit(random_batch_train_images, random_batch_train_labels, batch_size= 64, validation_data=(random_batch_validation_images, random_batch_validation_labels), epochs=train_epochs)
+		history = model.fit(random_batch_train_images, random_batch_train_labels, batch_size=batch_size, validation_data=(random_batch_validation_images, random_batch_validation_labels), epochs=train_epochs)
 	    
 		# Access the validation accuracy
 		validation_accuracy = history.history['val_accuracy'][-1]
@@ -155,7 +155,8 @@ for seed in SEED:
 
 
 	# Run Hyperopt to find the best hyperparameters
-	best = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=10)
+	max_evals = 10
+	best = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=max_evals)
 
 	# retrieve and train best model
 	model = build_model(best)
