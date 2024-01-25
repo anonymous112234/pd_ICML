@@ -1,4 +1,3 @@
-import keras_tuner
 import tensorflow as tf
 from tensorflow import keras
 
@@ -62,7 +61,7 @@ test_images, test_labels = test_images[5000:], test_labels[5000:]
 
 def build_model(params):
     
-	model = models.Sequential()
+	model = keras.Sequential()
 
     # model layers
 	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', input_shape = (28, 28, 1)))
@@ -132,11 +131,21 @@ for seed in SEED:
 	}
 
 	def objective(params):
-		model = create_cnn(params)
+		model = build_model(params)
 
+		batch_size = 64
+		batches = 128
+		
 		# Train and evaluate the model (modify this according to your dataset and training process)
 		train_epochs = 5
-		history = model.fit(train_images, train_labels, batch_size= 64, validation_data=(validation_images, validation_labels), epochs=train_epochs)
+		indices = np.random.choice(59999, size = (batch_size*batches, ), replace=False)
+		vIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
+
+		# FM dataset
+		random_batch_train_images, random_batch_train_labels = train_images[indices], train_labels[indices]
+		random_batch_validation_images, random_batch_validation_labels = validation_images[vIndices], validation_labels[vIndices]
+
+		history = model.fit(random_batch_train_images, random_batch_train_labels, batch_size= 64, validation_data=(random_batch_validation_images, random_batch_validation_labels), epochs=train_epochs)
 	    
 		# Access the validation accuracy
 		validation_accuracy = history.history['val_accuracy'][-1]
