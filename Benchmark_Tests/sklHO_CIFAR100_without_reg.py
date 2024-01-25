@@ -38,8 +38,8 @@ from google.cloud import storage
 
 
 
-# CIFAR10 dataset
-(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar10.load_data()
+# CIFAR100 dataset
+(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar100.load_data()
 
 # normalizing data
 train_images, test_images = train_images / 255.0, test_images / 255.0
@@ -65,7 +65,7 @@ def build_model(params):
 	# hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
 
 	model.add(tf.keras.layers.Dense(256, activation = "relu"))
-	model.add(tf.keras.layers.Dense(10, activation = "softmax"))
+	model.add(tf.keras.layers.Dense(100, activation = "softmax"))
 
 	optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
 
@@ -198,7 +198,7 @@ for seed in SEED:
 	# writing data to excel file
 	data = [[test_loss, train_loss, model_num, max_trials, time_lapsed, seed]]
 
-	with open('../sklHO_CIFAR10_without_reg.csv', 'a', newline = '') as file:
+	with open('../sklHO_CIFAR100_without_reg.csv', 'a', newline = '') as file:
 	    writer = csv.writer(file)
 	    writer.writerows(data)
 
