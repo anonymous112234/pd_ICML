@@ -70,7 +70,7 @@ def build_model(hp):
 
     model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
 
-    model.add(tf.keras.layers.Dense(1024, activation = "relu", , kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
+    model.add(tf.keras.layers.Dense(1024, activation = "relu", kernel_regularizer=tf.keras.regularizers.l2(l=hp_reg)))
     model.add(tf.keras.layers.Dropout(0.5))
     model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
