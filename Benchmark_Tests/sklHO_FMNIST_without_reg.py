@@ -65,18 +65,18 @@ def build_model(params):
 	model = models.Sequential()
 
     # model layers
-    model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', input_shape = (28, 28, 1)))
-    model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu'))
-    model.add(tf.keras.layers.Conv2D(256,  kernel_size = 3, dilation_rate=(1,1), activation='relu'))
+	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', input_shape = (28, 28, 1)))
+	model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu'))
+	model.add(tf.keras.layers.Conv2D(256,  kernel_size = 3, dilation_rate=(1,1), activation='relu'))
 
-    model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
+	model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
 
     # # no regularization
     # hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
 
-    model.add(tf.keras.layers.Dense(1024, activation = "relu"))
-    model.add(tf.keras.layers.Dropout(0.5))
-    model.add(tf.keras.layers.Dense(10, activation = "softmax"))
+	model.add(tf.keras.layers.Dense(1024, activation = "relu"))
+	model.add(tf.keras.layers.Dropout(0.5))
+	model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
 	optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
 
