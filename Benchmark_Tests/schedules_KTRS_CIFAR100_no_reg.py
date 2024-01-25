@@ -60,7 +60,7 @@ def build_model(hp):
 	# hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
 
 	model.add(tf.keras.layers.Dense(256, activation = "relu"))
-	model.add(tf.keras.layers.Dense(10, activation = "softmax"))
+	model.add(tf.keras.layers.Dense(100, activation = "softmax"))
 
 
 	# Tune the learning rate schedule
