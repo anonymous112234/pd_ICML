@@ -63,7 +63,7 @@ def build_model(params):
 	model.add(tf.keras.layers.Flatten())
 
 
-	model.add(tf.keras.layers.Dense(256, activation = "relu"), kernel_regularizer=tf.keras.regularizers.l2(params['l2_reg']))
+	model.add(tf.keras.layers.Dense(256, activation = "relu", kernel_regularizer=tf.keras.regularizers.l2(params['l2_reg'])))
 	model.add(tf.keras.layers.Dense(100, activation = "softmax"))
 
 	optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
