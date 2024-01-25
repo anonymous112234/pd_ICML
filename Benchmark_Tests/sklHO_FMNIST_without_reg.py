@@ -127,7 +127,7 @@ for seed in SEED:
 
 	# Define the search space
 	space = {
-		'learning_rate': hp.loguniform('learning_rate', -4, -2),
+		'learning_rate': hp.loguniform('learning_rate', -5, -0),
 	}
 
 	def objective(params):
@@ -137,7 +137,7 @@ for seed in SEED:
 		batches = 128
 
 		# Train and evaluate the model (modify this according to your dataset and training process)
-		train_epochs = 6
+		train_epochs = 1
 		indices = np.random.choice(59999, size = (batch_size*batches, ), replace=False)
 		vIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
 
@@ -155,7 +155,7 @@ for seed in SEED:
 
 
 	# Run Hyperopt to find the best hyperparameters
-	max_evals = 10
+	max_evals = 25
 	best = fmin(fn=objective, space=space, algo=tpe.suggest, max_evals=max_evals)
 
 	# retrieve and train best model

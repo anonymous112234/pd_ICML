@@ -38,8 +38,8 @@ from google.cloud import storage
 
 
 
-# CIFAR100 dataset
-(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar100.load_data()
+# CIFAR10 dataset
+(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar10.load_data()
 
 # normalizing data
 train_images, test_images = train_images / 255.0, test_images / 255.0
@@ -62,8 +62,10 @@ def build_model(params):
 
 	model.add(tf.keras.layers.Flatten())
 
-	model.add(tf.keras.layers.Dense(256, activation = "relu"))
-	model.add(tf.keras.layers.Dense(100, activation = "softmax"))
+	# hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
+
+	model.add(tf.keras.layers.Dense(256, activation = "relu"), kernel_regularizer=tf.keras.regularizers.l2(params['l2_reg']))
+	model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
 	optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
 
@@ -116,6 +118,7 @@ for seed in SEED:
 	# Define the search space
 	space = {
 		'learning_rate': hp.loguniform('learning_rate', -5, -0),
+		'l2_reg': hp.loguniform('l2_reg', -6, -1)
 	}
 
 	def objective(params):
@@ -190,13 +193,13 @@ for seed in SEED:
 
 
 
-	model_num = "4_without_reg"
+	model_num = "4_with_reg"
 
 
 	# writing data to excel file
 	data = [[test_loss, train_loss, model_num, max_trials, time_lapsed, seed]]
 
-	with open('../sklHO_CIFAR100_without_reg.csv', 'a', newline = '') as file:
+	with open('../sklHO_CIFAR10_with_reg.csv', 'a', newline = '') as file:
 	    writer = csv.writer(file)
 	    writer.writerows(data)
 

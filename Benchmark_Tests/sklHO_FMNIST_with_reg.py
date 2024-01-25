@@ -38,32 +38,44 @@ from google.cloud import storage
 
 
 
-# CIFAR100 dataset
-(train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar100.load_data()
+# Fashion-MNIST dataset
+fashion_mnist = tf.keras.datasets.fashion_mnist
+(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+
+sample_shape = train_images[0].shape
+img_width, img_height = sample_shape[0], sample_shape[1]
+input_shape = (img_width, img_height, 1)
+
+# Reshape data
+train_images = train_images.reshape(len(train_images), input_shape[0], input_shape[1], input_shape[2])
+test_images  = test_images.reshape(len(test_images), input_shape[0], input_shape[1], input_shape[2])
 
 # normalizing data
 train_images, test_images = train_images / 255.0, test_images / 255.0
 
+# splitting data into validation/test set
 validation_images, validation_labels = test_images[0:5000], test_labels[0:5000]
 test_images, test_labels = test_images[5000:], test_labels[5000:]
 
 
 
 def build_model(params):
+    
 	model = keras.Sequential()
 
-	model.add(tf.keras.layers.Conv2D(32,  kernel_size = 3, activation='relu', input_shape = (32, 32, 3)))
-	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, activation='relu'))
-	model.add(tf.keras.layers.MaxPooling2D((2, 2)))
-	model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, activation='relu'))
-	model.add(tf.keras.layers.MaxPooling2D((2, 2)))
-	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, activation='relu'))
-	model.add(tf.keras.layers.MaxPooling2D((4, 4)))
+    # model layers
+	model.add(tf.keras.layers.Conv2D(64,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu', input_shape = (28, 28, 1)))
+	model.add(tf.keras.layers.Conv2D(128,  kernel_size = 3, strides=(2,2), dilation_rate=(1,1), activation='relu'))
+	model.add(tf.keras.layers.Conv2D(256,  kernel_size = 3, dilation_rate=(1,1), activation='relu'))
 
-	model.add(tf.keras.layers.Flatten())
+	model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
 
-	model.add(tf.keras.layers.Dense(256, activation = "relu"))
-	model.add(tf.keras.layers.Dense(100, activation = "softmax"))
+    # # no regularization
+    # hp_reg = hp.Float("reg_term", min_value=1e-5, max_value=1e-1)
+
+	model.add(tf.keras.layers.Dense(1024, activation = "relu"), kernel_regularizer=tf.keras.regularizers.l2(params['l2_reg']))
+	model.add(tf.keras.layers.Dropout(0.5))
+	model.add(tf.keras.layers.Dense(10, activation = "softmax"))
 
 	optimizer = tf.keras.optimizers.Adam(learning_rate=params['learning_rate'])
 
@@ -116,17 +128,18 @@ for seed in SEED:
 	# Define the search space
 	space = {
 		'learning_rate': hp.loguniform('learning_rate', -5, -0),
+		'l2_reg': hp.loguniform('l2_reg', -6, -1)
 	}
 
 	def objective(params):
 		model = build_model(params)
 
 		batch_size = 64
-		batches = 780
+		batches = 128
 
 		# Train and evaluate the model (modify this according to your dataset and training process)
 		train_epochs = 1
-		indices = np.random.choice(49999, size = (batch_size*batches, ), replace=False)
+		indices = np.random.choice(59999, size = (batch_size*batches, ), replace=False)
 		vIndices = np.random.choice(4999, size = (batch_size*10, ), replace=False)
 
 		# FM dataset
@@ -160,7 +173,7 @@ for seed in SEED:
 
 	# getting history
 	# print("history"), print(hist.history["val_loss"])
-	grad_steps = [i * 780 for i in hist.history['val_loss']]
+	grad_steps = [i * 936 for i in hist.history['val_loss']]
 	# print(""), print("grad_steps"), print(grad_steps)
 
 
@@ -190,13 +203,13 @@ for seed in SEED:
 
 
 
-	model_num = "4_without_reg"
+	model_num = "4_with_reg"
 
 
 	# writing data to excel file
 	data = [[test_loss, train_loss, model_num, max_trials, time_lapsed, seed]]
 
-	with open('../sklHO_CIFAR100_without_reg.csv', 'a', newline = '') as file:
+	with open('../sklHO_FMNIST_with_reg.csv', 'a', newline = '') as file:
 	    writer = csv.writer(file)
 	    writer.writerows(data)
 
