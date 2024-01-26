@@ -134,7 +134,7 @@ for seed in SEED:
 		model = build_model(params)
 
 		batch_size = 64
-		batches = 128
+		batches = 936
 
 		# Train and evaluate the model (modify this according to your dataset and training process)
 		train_epochs = 1
