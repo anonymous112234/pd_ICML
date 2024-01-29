@@ -128,8 +128,9 @@ def set_global_determinism(seed):
 
 
 
-SEED = [5, 15, 24, 34, 49, 60, 74, 89, 97, 100]
+# SEED = [5, 15, 24, 34, 49, 60, 74, 89, 97, 100]
 # SEED = [101, 150, 200]
+SEED = [101, 115, 134, 150, 175, 200]
 
 
 
@@ -176,9 +177,9 @@ for seed in SEED:
 	hist = model.fit(train_images, train_labels, batch_size= 64, validation_data=(validation_images, validation_labels), epochs=train_epochs, callbacks=[callback])
 
 	# getting history
-	# print("history"), print(hist.history["val_loss"])
+	print("history"), print(hist.history["val_loss"])
 	grad_steps = [i * 936 for i in hist.history['val_loss']]
-	# print(""), print("grad_steps"), print(grad_steps)
+	print(""), print("grad_steps"), print(grad_steps)
 
 
 	time_lapsed = time.time() - start_time
