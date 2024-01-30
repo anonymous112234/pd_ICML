@@ -207,7 +207,8 @@ for seed in SEED:
 
 
 	# writing data to excel file
-	data = [[test_loss, train_loss, model_num, max_trials, time_lapsed, seed]]
+	# data = [[test_loss, train_loss, model_num, max_trials, time_lapsed, seed]]
+	data = [[hist.history["val_loss"], grad_steps]]
 
 	with open('../sklHO_FMNIST_without_reg.csv', 'a', newline = '') as file:
 	    writer = csv.writer(file)
